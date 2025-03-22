@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Fun Daily Dashboard</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #ffeb3b; /* Bright yellow background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            color: #34495e;
+        }
+
+        header {
+            background-color: #3498db;
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 2em;
+            border-bottom: 5px solid #2980b9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .date-time, .quote, .todo, .notes, .theme {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px dashed #2980b9;
+        }
+
+        .quote p {
+            font-size: 1.2em;
+            color: #e67e22;
+            font-style: italic;
+        }
+
+        .todo input, .todo button {
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 1px solid #3498db;
+        }
+
+        .todo ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .todo li {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f39c12;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .todo li button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .notes textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #bdc3c7;
+            font-size: 16px;
+        }
+
+        .theme button {
+            padding: 15px;
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        footer {
+            margin-top: 30px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .happy-face {
+            font-size: 3em;
+            margin: 10px;
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Fun Daily Dashboard</h1>
+        <p>Stay Happy, Stay Busy!</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Current Date and Time -->
+        <div class="date-time">
+            <h3>Today's Date: <span id="date"></span></h3>
+            <p>Current Time: <span id="time"></span></p>
+        </div>
+
+        <!-- Fun Daily Quote -->
+        <div class="quote">
+            <h3>Quote of the Day</h3>
+            <p id="quote">"The more that you read, the more things you will know. The more that you learn, the more places you'll go." - Dr. Seuss</p>
+        </div>
+
+        <!-- To-Do List -->
+        <div class="todo">
+            <h3>My Fun To-Do List</h3>
+            <input type="text" id="todoInput" placeholder="What's next on your list?">
+            <button onclick="addTodo()">Add Task</button>
+            <ul id="todoList"></ul>
+        </div>
+
+        <!-- Fun Notes Section -->
+        <div class="notes">
+            <h3>Write Your Fun Thoughts!</h3>
+            <textarea id="notes" placeholder="What's on your mind?"></textarea>
+        </div>
+
+        <!-- Theme Customization -->
+        <div class="theme">
+            <h3>Pick a Fun Color Theme!</h3>
+            <button onclick="changeTheme()">Change Background Color</button>
+        </div>
+
+        <div class="happy-face">😊</div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 My Fun Daily Dashboard</p>
+    </footer>
+
+    <script>
+        // Display current date and time
+        const dateElement = document.getElementById('date');
+        const timeElement = document.getElementById('time');
+
+        function updateTime() {
+            const date = new Date();
+            dateElement.textContent = date.toLocaleDateString();
+            timeElement.textContent = date.toLocaleTimeString();
+        }
+
+        setInterval(updateTime, 1000); // Update time every second
+
+        // Fun Daily Quote
+        const quotes = [
+            '"The more that you read, the more things you will know. The more that you learn, the more places you\'ll go." - Dr. Seuss',
+            '"You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose." - Dr. Seuss',
+            '"The greatest glory in living lies not in never falling, but in rising every time we fall." - Nelson Mandela'
+        ];
+
+        const quoteElement = document.getElementById('quote');
+        function changeQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            quoteElement.textContent = quotes[randomIndex];
+        }
+        setInterval(changeQuote, 10000); // Change quote every 10 seconds
+
+        // Handle To-Do List
+        function addTodo() {
+            const todoInput = document.getElementById('todoInput');
+            const todoText = todoInput.value.trim();
+            if (todoText) {
+                const li = document.createElement('li');
+                li.innerHTML = `${todoText} <button onclick="removeTodo(this)">Done</button>`;
+                const todoList = document.getElementById('todoList');
+                todoList.appendChild(li);
+                todoInput.value = ''; // Clear input after adding task
+            }
+        }
+
+        function removeTodo(button) {
+            const li = button.parentElement;
+            li.remove();
+        }
+
+        // Handle Theme Customization
+        function changeTheme() {
+            const body = document.body;
+            const newColor = body.style.backgroundColor === 'rgb(255, 235, 59)' ? '#1abc9c' : '#ffeb3b';
+            body.style.backgroundColor = newColor;
+        }
+    </script>
+
+</body>
+</html>
